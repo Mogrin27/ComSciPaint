@@ -1,5 +1,3 @@
-package compSciPaint;
-
 /**
  * @author Jodie Wilbur
  * @since 4/27/2021
@@ -12,7 +10,6 @@ public class CSPaint {
      * @param args Not used.
      */
     public static void main(String[] args) {
-        new paintWindow();
-
+        new PaintWindow();
     }
 }

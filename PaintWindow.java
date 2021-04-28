@@ -1,5 +1,3 @@
-package compSciPaint;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -8,7 +6,6 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * @author Jodie Wilbur
@@ -16,7 +13,7 @@ import java.util.List;
  * Creates a JFrame and JButtons as well as handles all the mouse input and shapes to be drawn.
  */
 
-public class paintWindow extends JFrame {
+public class PaintWindow extends JFrame {
 
     /**
      * Initializes the buttons to be used in the program.
@@ -34,9 +31,9 @@ public class paintWindow extends JFrame {
     Color strokeColor = Color.BLACK, fillColor = Color.BLACK;
 
     /**
-     * paintWindow draws the JFrame window and creates/populates a toolbar so you can change shapes to draw with.
+     * PaintWindow draws the JFrame window and creates/populates a toolbar so you can change shapes to draw with.
      */
-    paintWindow() {
+    PaintWindow() {
         /**
          * Creates amd sets default vales for the JFrame.
          */
@@ -84,7 +81,7 @@ public class paintWindow extends JFrame {
     /**
      * Method for creating buttons and giving them a value
      * @param brushAction An integer that is used to change what shape you want to draw.
-     * @param name The name to display ontop of the button
+     * @param name The name to display on top of the button
      * @return This returns the button so it can be used.
      */
     public JButton makeButton(String name, final int brushAction){
@@ -97,7 +94,10 @@ public class paintWindow extends JFrame {
         buttons.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 currentAction = brushAction; //This stores the button integer
-                System.out.println("brushAction: " + brushAction); //This will print out "brushAction: " and the bush action integer for debugging.
+
+                //This will print out "brushAction: " and the bush action integer for debugging.
+                //Uncomment to see console output
+//                System.out.println("brushAction: " + brushAction);
             }
         });
         return buttons;
@@ -129,24 +129,23 @@ public class paintWindow extends JFrame {
         return buttons;
     }
 
-    /**
-     * This is where all the mouse input happens
-     * We create ArrayLists to store
-     */
+
+    //This is where all the mouse input happens
+    //We create ArrayLists to store shapes(x,y) and color values
     private class DrawingPlain extends JComponent {
         ArrayList<Shape> shapes = new ArrayList<Shape>();
         ArrayList<Color> shapeStrokes = new ArrayList<Color>();
         ArrayList<Color> shapeFill = new ArrayList<Color>();
         Point pointStart, pointEnd;
 
-        /**
-         * This method creates the events to track mouse input.
-         */
+
+        //This method creates the events to track mouse input.
         public DrawingPlain() {
             this.addMouseListener(new MouseAdapter() {
 
                 /**
-                 *
+                 * This MouseEvent triggers when the mouse button is pressed and then passes the event to either
+                 * mouseReleased or mouseDragged depending on the current action integer.
                  * @param e Used to grab the starting x and y coordinates.
                  */
                 public void mousePressed(MouseEvent e) {
@@ -172,7 +171,9 @@ public class paintWindow extends JFrame {
                         pointEnd = null;
                         repaint();
 
-                        System.out.println("drawLine: " + "currentAction " + currentAction + " " + shape); //This prints out information used for this mouse event
+                        //This prints out information used for this mouse event
+                        //Uncomment to see console output
+//                        System.out.println("drawLine: " + "currentAction " + currentAction + " " + shape); //This prints out information used for this mouse event
                     }else if(currentAction == 3){
                         Shape shape = drawEllipse(pointStart.x, pointStart.y, e.getX(), e.getY());
                         shapes.add(shape);
@@ -183,7 +184,9 @@ public class paintWindow extends JFrame {
                         pointEnd = null;
                         repaint();
 
-                        System.out.println("drawEllipse: " + "currentAction " + currentAction + " " + shape); //This prints out information used for this mouse event
+                        //This prints out information used for this mouse event
+                        //Uncomment to see console output
+//                        System.out.println("drawEllipse: " + "currentAction " + currentAction + " " + shape);
                     }else if(currentAction == 4) {
                         Shape shape = drawRectangle(pointStart.x, pointStart.y, e.getX(), e.getY());
                         shapes.add(shape);
@@ -194,7 +197,9 @@ public class paintWindow extends JFrame {
                         pointEnd = null;
                         repaint();
 
-                        System.out.println("drawRectangle: " + "currentAction " + currentAction + " " + shape); //This prints out information used for this mouse event
+                        //This prints out information used for this mouse event
+                        //Uncomment to see console output
+//                        System.out.println("drawRectangle: " + "currentAction " + currentAction + " " + shape); //This prints out information used for this mouse event
                     }
                 }
             });
@@ -216,7 +221,9 @@ public class paintWindow extends JFrame {
                         pointEnd = null;
                         repaint();
 
-                        System.out.println("drawEllipse: " + "currentAction " + currentAction + " " + shape); //This prints out information used for this mouse event
+                        //This prints out information used for this mouse event
+                        //Uncomment to see console output
+//                        System.out.println("drawEllipse: " + "currentAction " + currentAction + " " + shape);
                     } else if (currentAction > 1) {
                         pointEnd = new Point(e.getX(), e.getY());
                         repaint();
@@ -235,13 +242,19 @@ public class paintWindow extends JFrame {
         public void paint(Graphics g) {
             Graphics2D graphicsSetting = (Graphics2D) g;
             graphicsSetting.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            graphicsSetting.setStroke(new BasicStroke(2)); //Sets the default stroke width to 2
+            graphicsSetting.setStroke(new BasicStroke(2)); //Sets the default stroke width to 2.
             graphicsSetting.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
 
             //This is where the color arrays are read from. These store a RGB value.
             Iterator<Color> strokeCounter = shapeStrokes.iterator();
             Iterator<Color> fillCounter = shapeFill.iterator();
-            System.out.println(shapeStrokes);
+
+            //The System.out lines here will print out the value of the arrays as you draw shapes on the screen.
+            //Comment them to turn them off.
+            System.out.println("ShapeStrokes: " + shapeStrokes.iterator() + "\n");
+            System.out.println("ShapeFill: " + shapeFill + "\n");
+            System.out.println("StrokeCounter: " + strokeCounter + "\n");
+            System.out.println("FillCounter: " + fillCounter + "\n");
             for (Shape i : shapes) {
                 graphicsSetting.setPaint(strokeCounter.next());
                 graphicsSetting.draw(i);
@@ -255,7 +268,9 @@ public class paintWindow extends JFrame {
              * The graphicsSetting.draw(shape) does not paint the permanent shape onto the board but rather give you a visual of the shape and where it will be drawn
              */
             if (pointStart != null && pointEnd != null) {
-//                graphicsSetting.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f)); //Uncomment this to make the guide shape transparent.
+                //Uncomment this to make the guide shape transparent.
+                //Change the value of 0.4f to change the transparent intensity.
+//                graphicsSetting.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
                 if(currentAction == 2){
                     Shape shape = drawLine(pointStart.x, pointStart.y, pointEnd.x, pointEnd.y);
                     graphicsSetting.draw(shape); //draw(shape) draws the shape selected as an outline and will not leave it on the window
